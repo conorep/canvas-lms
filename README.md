@@ -53,11 +53,11 @@ THINGS THAT I WILL BE USING REGULARLY
 stopping DB safely (hoping to prevent corruption)
 
 export PGHOST=localhost
-/usr/lib/postgresql/12/bin/pg_ctl stop -D ~/postgresql-data/
+/usr/lib/postgresql/14/bin/pg_ctl stop -D ~/postgresql-data/
 after this, go to command palette and select Codespaces: Stop Current Codespace
 starting the db and launching the Canvas server (providing access to Canvas UI)
 
 export PGHOST=localhost
-/usr/lib/postgresql/12/bin/pg_ctl start -D ~/postgresql-data/
+/usr/lib/postgresql/14/bin/pg_ctl start -D ~/postgresql-data/
 bundle install
 bundle exec rails server

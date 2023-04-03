@@ -37,5 +37,5 @@ module Multipart
   require "multipart/param"
   require "multipart/terminator"
   require "multipart/sequenced_stream"
-  require "multipart/post"
+  require "multipart/posts"
 end
