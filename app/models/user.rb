@@ -355,7 +355,7 @@ class User < ActiveRecord::Base
   end
 
   def self.order_by_name(options = {})
-    clause = name_order_by_clause
+    clause = name_order_by_clause(options[:table])
     sort_direction = options[:direction] == :descending ? "DESC" : "ASC"
     scope = order(Arel.sql("#{clause} #{sort_direction}")).order(Arel.sql("#{table_name}.id #{sort_direction}"))
     if scope.select_values.empty?
@@ -3243,12 +3243,18 @@ class User < ActiveRecord::Base
   end
 
   def submittable_attachments
-    attachments.active.or(
-      Attachment.active.where(
-        context_type: "Group",
-        context_id: current_group_memberships.active.select(:group_id)
-      )
+    user_attachments = attachments.active
+    group_attachments = Attachment.active.where(
+      context_type: "Group",
+      context_id: current_group_memberships.active.select(:group_id)
     )
+
+    if block_given?
+      user_attachments = yield(user_attachments)
+      group_attachments = yield(group_attachments)
+    end
+
+    user_attachments.or(group_attachments)
   end
 
   def authenticate_one_time_password(code)
